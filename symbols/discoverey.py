@@ -8,7 +8,7 @@ class SymbolDiscoverer:
         self.prefix = prefix
         self.suffix = suffix
 
-    def next_symbol(self):
+    def possible_symbols(self):
         for length in range(self.min_symbol_length, self.max_symbol_length):
             for perm in itertools.permutations(string.ascii_uppercase, length):
-                yield perm
+                yield self.prefix + ''.join(perm) + self.suffix
