@@ -14,7 +14,7 @@ class SymbolDiscoverer:
             for perm in itertools.permutations(string.ascii_uppercase, length):
                 yield self.prefix + ''.join(perm) + self.suffix
 
-    def check_symbol(self, symbol):
+    def check_symbol_exists(self, symbol):
         r = requests.get('https://finance.yahoo.com/q?s=' + symbol, allow_redirects=False)
         # Okay indicates the code exists, redirect to search will happen if that specific code isn't found
         return r.status_code == requests.codes.ok
