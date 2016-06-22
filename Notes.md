@@ -12,4 +12,7 @@
 - https://github.com/Benny-/Yahoo-ticker-symbol-downloader
 - Looks like hitting https://finance.yahoo.com/lookup limits the number of results available to 2000~. So if you attempt to search and then crawl the search result pages you may end up missing alot of codes due to this.
 - Historically yahoo had APIs available to query ticker codes, but as of 2016 sounds like these have been closed.
+- Brute forcing ticker codes is problematic due to rate limiting on checks available.
+  - 2,000 requests per hour for public YQL access, or 20,000 with a cap at 100,000 a day if logged in. This would still take year(s) to crawl 3-5 char ticker codes assuming alphanumeric usage.
+  - Possible to read them by going through the sectors and industry tables.
 
