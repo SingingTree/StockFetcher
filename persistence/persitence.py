@@ -1,18 +1,23 @@
-from sqlalchemy import create_engine, Table, Column, String, Date, MetaData, ForeignKey
+from sqlalchemy import Column, String, Date, ForeignKey, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
+Base = declarative_base()
 
-def ensure_schema():
-    engine = create_engine('sqlite:///stocks.db', echo=True)
-    metadata = MetaData()
-    stocks = Table('stocks', metadata,
-                   Column('code', String, primary_key=True),
-                   Column('name', String),
-                   )
+class StockSymbolAndName(Base):
+    __tablename__ = 'stocks'
+    symbol = Column(String(10), primary_key=True)
+    name = Column(String(255))
 
+class StockInfo(Base):
+    __tablename__ = 'sotck_info'
+    symbol = Column(String(10), ForeignKey('stocks.symbol'), primary_key=True)
+    date = Column(Date, primary_key=True)
 
-    stock_info = Table('stock_info', metadata,
-                       Column('code', String, ForeignKey('stocks.code'), primary_key=True),
-                       Column('date', Date, primary_key=True),
-                       )
+class Persistor:
+    def __init__(self):
+        self.engine = create_engine('sqlite:///stocks.db', echo=True)
+        self.session = sessionmaker(bind=self.engine)
 
-    metadata.create_all(engine)
+    def session(self):
+        return self.session()
