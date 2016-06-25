@@ -9,6 +9,9 @@ class StockSymbolAndName(Base):
     symbol = Column(String(10), primary_key=True)
     name = Column(String(255))
 
+    def __repr__(self):
+        return 'symbol: ' + self.symbol + ', name: ' + self.name
+
 class StockInfo(Base):
     __tablename__ = 'sotck_info'
     symbol = Column(String(10), ForeignKey('stocks.symbol'), primary_key=True)

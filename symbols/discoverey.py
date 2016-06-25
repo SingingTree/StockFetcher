@@ -1,7 +1,7 @@
 import itertools
 import string
 import requests
-
+from persistence import StockSymbolAndName
 
 class SymbolGenerator:
     def __init__(self, min_symbol_length, max_symbol_length, prefix='', suffix=''):
@@ -39,6 +39,6 @@ class IndustryDiscoverer:
         for company in industry['company']:
             if isinstance(company, list):
                 for item in company:
-                    yield item
+                    yield StockSymbolAndName(symbol=item['symbol'], name=item['name'].replace('\n', ' '))
             else:
-                yield company
+                yield StockSymbolAndName(symbol=company['symbol'], name=company['name'].replace('\n', ' '))
