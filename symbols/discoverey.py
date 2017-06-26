@@ -2,6 +2,7 @@ import itertools
 import string
 import requests
 from persistence import StockSymbolAndName
+import yql.yqlutil
 
 class SymbolGenerator:
     def __init__(self, min_symbol_length, max_symbol_length, prefix='', suffix=''):
@@ -23,7 +24,13 @@ class SymbolGenerator:
 
 class IndustryDiscoverer:
     def discover_industries(self):
-        r = requests.get('https://query.yahooapis.com/v1/public/yql?q=use%20%22http%3A%2F%2Fsingingtree.io%2Fyahoo.finance.sectors.xml%22%20as%20yahoo.finance.sectors%3B%20select%20*%20from%20yahoo.finance.sectors%3B&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=')
+        params = {'q': 'use "http://singingtree.io/yahoo.finance.sectors.xml" as yahoo.finance.sectors; '
+                       'select * from yahoo.finance.sectors',
+                  'format': 'json',
+                  'diagnostics': 'true',
+                  'env': 'store://datatables.org/alltableswithkeys',
+                  }
+        r = requests.get(yql.get_url_root(), params)
         sectors = r.json()['query']['results']['sector']
         for sector in sectors:
             industry = sector['industry']
@@ -34,7 +41,12 @@ class IndustryDiscoverer:
                 yield industry
 
     def discover_symbols_for_industry_id(self, id):
-        r = requests.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.industry%20where%20id%3D%22' + str(id) + '%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=')
+        params = {'q': 'select * from yahoo.finance.industry where id="%s"' %id,
+                  'format': 'json',
+                  'diagnostics': 'true',
+                  'env': 'store://datatables.org/alltableswithkeys',
+                  }
+        r = requests.get(yql.get_url_root(), params)
         industry = r.json()['query']['results']['industry']
         for company in industry['company']:
             if isinstance(company, list):
