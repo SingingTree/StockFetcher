@@ -1,13 +1,23 @@
 from sqlalchemy import Column, String, Date, Float, ForeignKey, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.types import Enum
+import enum
+
+
+class DiscoveredByEnum(enum.Enum):
+    symbol_search = 'symbol-search'
+    industry_query = 'industry-query'
+
 
 Base = declarative_base()
+
 
 class StockSymbolAndName(Base):
     __tablename__ = 'stocks'
     symbol = Column(String(10), primary_key=True)
     name = Column(String(255))
+    discovered_by = Column(Enum(DiscoveredByEnum))
 
     def __repr__(self):
         return 'symbol: ' + self.symbol + ', name: ' + self.name
