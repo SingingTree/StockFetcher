@@ -51,6 +51,10 @@ class IndustryDiscoverer:
         for company in industry['company']:
             if isinstance(company, list):
                 for item in company:
-                    yield StockSymbolAndName(symbol=item['symbol'], name=item['name'].replace('\n', ' '))
+                    yield StockSymbolAndName(symbol=item['symbol'],
+                                             name=item['name'].replace('\n', ' '),
+                                             discovered_by='industry-query')
             else:
-                yield StockSymbolAndName(symbol=company['symbol'], name=company['name'].replace('\n', ' '))
+                yield StockSymbolAndName(symbol=company['symbol'],
+                                         name=company['name'].replace('\n', ' '),
+                                         discovered_by='industry-query')

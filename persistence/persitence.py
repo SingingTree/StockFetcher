@@ -20,7 +20,7 @@ class StockSymbolAndName(Base):
     discovered_by = Column(Enum(DiscoveredByEnum))
 
     def __repr__(self):
-        return 'symbol: ' + self.symbol + ', name: ' + self.name
+        return 'symbol: ' + self.symbol + ', name: ' + self.name +', discoved by: ' + self.discovered_by
 
 class StockInfo(Base):
     __tablename__ = 'sotck_info'
