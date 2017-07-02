@@ -35,3 +35,6 @@ class Persistor:
 
     def get_session(self):
         return self.session()
+
+    def store_objects(self, objects):
+        self.get_session().add_all(objects);
